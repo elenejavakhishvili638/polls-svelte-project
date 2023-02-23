@@ -1,4 +1,5 @@
 <script>
+  import PollStore from "../stores/PollStore";
   import Button from "../shared/Button.svelte";
   import { createEventDispatcher } from "svelte";
 
@@ -45,7 +46,12 @@
     //add a new poll
     if (valid) {
       let poll = { ...fields, votesA: 0, votesB: 0, id: Math.random() };
-      dispatch("addPoll", poll);
+      //update data in poll store
+      PollStore.update((currentPolls) => {
+        return [poll, ...currentPolls];
+      });
+      //handle add not only new poll to polls but change the active item
+      dispatch("addPoll");
     }
   };
 </script>
